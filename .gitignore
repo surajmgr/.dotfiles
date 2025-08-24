@@ -1,0 +1,23 @@
+# Ignore everything
+*
+
+# Except these files
+!.gitignore
+!README.md
+!.gitmodules
+
+# Config files
+# First, let's ignore all the contents of the config directory
+.config/*
+
+# Except for these that I want to keep track of
+!.config/nvim
+
+.config/weztterm
+!.config/wezterm/*.lua
+!.config/wezterm/bg
+
+# Override unnecessary files; These forces git to ignore following files even if a previous rule would include them
+.env
+.DS_Store
+.vscode/
