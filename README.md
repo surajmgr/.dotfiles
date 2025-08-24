@@ -20,8 +20,8 @@ Make sure you have the following tools installed on your system:
    You can repeat this step for other configs as needed. As for the full integration, you can directly stow the whole repo:
    ```bash
    stow . -t ~
-```
-    Note: This will overwrite existing files in your home directory if they conflict with the dotfiles being stowed. Please back up any important files before proceeding.
+   ```
+   Note: This will overwrite existing files in your home directory if they conflict with the dotfiles being stowed. Please back up any important files before proceeding.
 
 ## Updating
 To update your dotfiles, navigate to the cloned repository and pull the latest changes:

@@ -11,9 +11,12 @@
 .config/*
 
 # Except for these that I want to keep track of
+!.config/
 !.config/nvim
 
-.config/weztterm
+# Wezterm config
+.config/wezterm/*
+!.config/wezterm/
 !.config/wezterm/*.lua
 !.config/wezterm/bg
 
