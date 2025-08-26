@@ -124,18 +124,18 @@ config.keys = {
 		key = ",",
 		mods = "SUPER",
 		action = wezterm.action.SpawnCommandInNewTab({
-			cwd = wezterm.home_dir,
-			args = { "nvim", wezterm.config_file },
+			cwd = "~",
+			args = { "nvim" },
 		}),
 	},
 	{
 		key = '"',
-		mods = "LEADER",
+		mods = "LEADER|SHIFT",
 		action = wezterm.action.SplitHorizontal({ domain = "CurrentPaneDomain" }),
 	},
 	{
 		key = "%",
-		mods = "LEADER",
+		mods = "LEADER|SHIFT",
 		action = wezterm.action.SplitVertical({ domain = "CurrentPaneDomain" }),
 	},
 	{
