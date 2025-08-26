@@ -18,7 +18,8 @@
 .config/wezterm/*
 !.config/wezterm/
 !.config/wezterm/*.lua
-!.config/wezterm/bg
+!.config/wezterm/bg/
+!.config/wezterm/bg/*
 
 # Override unnecessary files; These forces git to ignore following files even if a previous rule would include them
 .env
