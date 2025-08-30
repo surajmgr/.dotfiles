@@ -21,6 +21,16 @@
 !.config/wezterm/bg/
 !.config/wezterm/bg/*
 
+# I3 config
+.config/i3/*
+!.config/i3/
+!.config/i3/config
+
+# Picom config
+.config/picom/*
+!.config/picom/
+!.config/picom/picom.conf
+
 # Override unnecessary files; These forces git to ignore following files even if a previous rule would include them
 .env
 .DS_Store
