@@ -24,12 +24,49 @@
 # I3 config
 .config/i3/*
 !.config/i3/
-!.config/i3/config
+!.config/i3/*
+!.config/i3/scripts/
+!.config/i3/scripts/*
 
 # Picom config
 .config/picom/*
 !.config/picom/
-!.config/picom/picom.conf
+!.config/picom/*
+
+# Polybar config
+.config/polybar/*
+!.config/polybar/
+!.config/polybar/*
+!.config/polybar/scripts/
+!.config/polybar/scripts/*
+
+# Alacritty config
+.config/alacritty/*
+!.config/alacritty/
+!.config/alacritty/*
+
+# Fish config
+.config/fish/*
+!.config/fish/
+!.config/fish/*
+!.config/fish/completions/
+!.config/fish/completions/*
+!.config/fish/functions/
+!.config/fish/functions/*
+!.config/fish/conf.d/
+!.config/fish/conf.d/*
+!.config/fish/themes/
+!.config/fish/themes/*
+
+# Rofi config
+.config/rofi/*
+!.config/rofi/
+!.config/rofi/*
+
+# Yazi config
+.config/yazi/*
+!.config/yazi/
+!.config/yazi/*
 
 # Override unnecessary files; These forces git to ignore following files even if a previous rule would include them
 .env

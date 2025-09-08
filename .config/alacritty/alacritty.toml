@@ -1,0 +1,329 @@
+################################################################################
+#                                                                              #
+#                         Alacritty Terminal Configuration                    #
+#                              Black Professional Theme                        #
+#                                                                              #
+################################################################################
+
+################################################################################
+# ENVIRONMENT VARIABLES
+################################################################################
+
+[env]
+TERM = "xterm-256color"
+WINIT_X11_SCALE_FACTOR = "1"
+
+################################################################################
+# WINDOW CONFIGURATION
+################################################################################
+
+[window]
+# Dynamic padding adjusts to content
+dynamic_padding = true
+
+# Window decorations
+decorations = "full"
+decorations_theme_variant = "Dark"
+
+# Window title
+title = "Terminal"
+
+# Window opacity (0.0 - 1.0)
+opacity = 0.9
+
+# Window dimensions
+[window.dimensions]
+columns = 100
+lines = 30
+
+# Window class (for WM identification)
+[window.class]
+instance = "Alacritty"
+general = "Alacritty"
+
+# Padding around terminal content
+[window.padding]
+x = 8
+y = 8
+
+################################################################################
+# SCROLLING CONFIGURATION
+################################################################################
+
+[scrolling]
+# Maximum lines in scrollback buffer
+history = 50000
+
+# Scrolling speed multiplier
+multiplier = 3
+
+################################################################################
+# COLOR SCHEME - BLACK THEME
+################################################################################
+
+[colors]
+# Enable bright colors for bold text
+draw_bold_text_with_bright_colors = true
+
+# Primary colors
+[colors.primary]
+background = "#0D0D0D" # Deep black with slight warmth for less harshness
+foreground = "#E0E0E0" # Soft off-white for readability
+dim_foreground = "#A0A0A0" # Muted gray for dimmed text
+
+# Cursor colors
+[colors.cursor]
+text = "#0D0D0D" # Matches background for contrast
+cursor = "#B0B0B0" # Soft gray cursor to avoid stark white
+
+# Vi mode cursor
+[colors.vi_mode_cursor]
+text = "#0D0D0D" # Matches background
+cursor = "#B0B0B0" # Consistent with regular cursor
+
+# Search colors
+[colors.search]
+matches = { foreground = "#0D0D0D", background = "#FFD700" } # Muted gold for highlights
+focused_match = { foreground = "#0D0D0D", background = "#FF8C00" } # Softer orange for focus
+
+# Selection colors
+[colors.selection]
+text = "#0D0D0D" # Matches background
+background = "#4A4A4A" # Dark gray for subtle selection
+
+# Normal colors (0-7)
+[colors.normal]
+black = "#1C1C1C" # Slightly lighter black for visibility
+red = "#D75F5F" # Muted red, less aggressive
+green = "#5FD75F" # Softer green for comfort
+yellow = "#D7D75F" # Muted yellow, less harsh
+blue = "#5F5FD7" # Deeper blue for calm visuals
+magenta = "#D75FD7" # Softer magenta
+cyan = "#5FD7D7" # Muted cyan
+white = "#E0E0E0" # Matches foreground for consistency
+
+# Bright colors (8-15)
+[colors.bright]
+black = "#4A4A4A" # Medium gray for contrast
+red = "#FF6B6B" # Brighter but not overly vivid red
+green = "#6BFF6B" # Brighter green, still soft
+yellow = "#FFFF6B" # Brighter yellow, toned down
+blue = "#6B6BFF" # Brighter blue, less intense
+magenta = "#FF6BFF" # Brighter magenta, softened
+cyan = "#6BFFFF" # Brighter cyan, less harsh
+white = "#F5F5F5" # Slightly off-white for brightness
+
+################################################################################
+# FONT CONFIGURATION
+################################################################################
+
+[font]
+# Font size
+size = 10
+
+# Normal font
+[font.normal]
+family = "Hack"
+style = "Regular"
+
+# Bold font
+[font.bold]
+family = "Hack"
+style = "Bold"
+
+# Italic font
+[font.italic]
+family = "Hack"
+style = "Italic"
+
+# Bold italic font
+[font.bold_italic]
+family = "Hack"
+style = "Bold Italic"
+
+# Font offset for fine-tuning position
+[font.offset]
+x = 0
+y = 0
+
+# Glyph offset for fine-tuning individual characters
+[font.glyph_offset]
+x = 0
+y = 0
+
+################################################################################
+# SELECTION CONFIGURATION
+################################################################################
+
+[selection]
+# Characters considered part of a word for double-click selection
+semantic_escape_chars = ",│`|:\"' ()[]{}<>\\t"
+
+# Save selection to clipboard automatically
+save_to_clipboard = true
+
+################################################################################
+# CURSOR CONFIGURATION
+################################################################################
+
+[cursor]
+# Cursor style: Block, Underline, Beam
+style = { shape = "Block", blinking = "On" }
+
+# Vi mode cursor style
+vi_mode_style = "Block"
+
+# Show hollow cursor when window is not focused
+unfocused_hollow = true
+
+# Cursor thickness (beam and underline)
+thickness = 0.15
+
+################################################################################
+# MOUSE CONFIGURATION
+################################################################################
+
+[mouse]
+# Hide mouse cursor when typing
+hide_when_typing = true
+
+# Mouse bindings
+[[mouse.bindings]]
+mouse = "Middle"
+action = "PasteSelection"
+
+[[mouse.bindings]]
+mouse = "Right"
+action = "ExpandSelection"
+
+################################################################################
+# KEYBOARD BINDINGS
+################################################################################
+
+[keyboard]
+
+# Basic clipboard operations
+[[keyboard.bindings]]
+key = "V"
+mods = "Control|Shift"
+action = "Paste"
+
+[[keyboard.bindings]]
+key = "C"
+mods = "Control|Shift"
+action = "Copy"
+
+# Search functionality
+[[keyboard.bindings]]
+key = "F"
+mods = "Control|Shift"
+action = "SearchForward"
+
+[[keyboard.bindings]]
+key = "B"
+mods = "Control|Shift"
+action = "SearchBackward"
+
+# Clear screen
+[[keyboard.bindings]]
+key = "L"
+mods = "Control"
+action = "ClearLogNotice"
+
+[[keyboard.bindings]]
+key = "L"
+mods = "Control"
+mode = "~Vi"
+chars = "\f"
+
+# Scrolling with keyboard
+[[keyboard.bindings]]
+key = "PageUp"
+mods = "Shift"
+mode = "~Alt"
+action = "ScrollPageUp"
+
+[[keyboard.bindings]]
+key = "PageDown"
+mods = "Shift"
+mode = "~Alt"
+action = "ScrollPageDown"
+
+[[keyboard.bindings]]
+key = "Home"
+mods = "Shift"
+mode = "~Alt"
+action = "ScrollToTop"
+
+[[keyboard.bindings]]
+key = "End"
+mods = "Shift"
+mode = "~Alt"
+action = "ScrollToBottom"
+
+# Font size adjustment
+[[keyboard.bindings]]
+key = "Plus"
+mods = "Control"
+action = "IncreaseFontSize"
+
+[[keyboard.bindings]]
+key = "Minus"
+mods = "Control"
+action = "DecreaseFontSize"
+
+[[keyboard.bindings]]
+key = "Key0"
+mods = "Control"
+action = "ResetFontSize"
+
+# Vi mode bindings
+[[keyboard.bindings]]
+key = "Space"
+mods = "Shift|Control"
+mode = "Vi|~Search"
+action = "ScrollToBottom"
+
+[[keyboard.bindings]]
+key = "Space"
+mods = "Shift|Control"
+mode = "~Search"
+action = "ToggleViMode"
+
+# New window/tab (if supported by WM)
+[[keyboard.bindings]]
+key = "Return"
+mods = "Control|Shift"
+action = "SpawnNewInstance"
+
+################################################################################
+# GENERAL SETTINGS
+################################################################################
+
+[general]
+# Live config reload
+live_config_reload = true
+
+# Working directory
+working_directory = "None"
+
+# Import additional config files
+import = []
+
+################################################################################
+# DEBUG SETTINGS
+################################################################################
+
+[debug]
+# Render timer
+render_timer = false
+
+# Persistent logging
+persistent_logging = false
+
+# Log level: Off, Error, Warn, Info, Debug, Trace
+log_level = "Warn"
+
+################################################################################
+# END OF CONFIGURATION
+################################################################################
