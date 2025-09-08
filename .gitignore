@@ -67,6 +67,9 @@
 .config/yazi/*
 !.config/yazi/
 !.config/yazi/*
+!.config/yazi/flavors/
+!.config/yazi/flavors/*
+!.config/yazi/flavors/*/*
 
 # Override unnecessary files; These forces git to ignore following files even if a previous rule would include them
 .env
