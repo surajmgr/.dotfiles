@@ -62,6 +62,23 @@
 .config/rofi/*
 !.config/rofi/
 !.config/rofi/*
+!.config/rofi/applets/
+!.config/rofi/applets/*
+!.config/rofi/applets/*/*
+!.config/rofi/colors/
+!.config/rofi/colors/*
+!.config/rofi/images/
+!.config/rofi/images/*
+!.config/rofi/scripts/
+!.config/rofi/scripts/*
+!.config/rofi/custom/
+!.config/rofi/custom/*
+!.config/rofi/launchers/
+!.config/rofi/launchers/*
+!.config/rofi/launchers/*/*
+!.config/rofi/powermenu/
+!.config/rofi/powermenu/*
+!.config/rofi/powermenu/*/*
 
 # Yazi config
 .config/yazi/*
@@ -70,6 +87,12 @@
 !.config/yazi/flavors/
 !.config/yazi/flavors/*
 !.config/yazi/flavors/*/*
+
+# Fusuma config
+.config/fusuma/*
+!.config/fusuma/
+!.config/fusuma/*
+!.config/fusuma/*/*
 
 # Override unnecessary files; These forces git to ignore following files even if a previous rule would include them
 .env

@@ -1,0 +1,103 @@
+swipe:
+  3: # Three-finger gestures
+    left:
+      command: "~/.config/fusuma/scripts/workspace.sh next"
+      keypress:
+        LEFTALT:
+          command: 'i3-msg "move left 50px"'
+        LEFTMETA:
+          command: "~/.config/fusuma/scripts/workspace.sh last"
+        "LEFTMETA+LEFTALT":
+          command: 'xdotool mousedown 1'
+
+    right:
+      command: "~/.config/fusuma/scripts/workspace.sh prev"
+      keypress:
+        LEFTALT:
+          command: 'i3-msg "move right 50px"'
+        LEFTMETA:
+          command: "~/.config/fusuma/scripts/workspace.sh first"
+
+    up:
+      command: 'xdotool click 1 && i3-msg fullscreen'
+      keypress:
+        LEFTALT:
+          command: 'i3-msg "move up 50px"'
+        LEFTMETA:
+          command: 'i3-msg floating enable'
+        "LEFTMETA+LEFTSHIFT":
+          command: "~/.config/fusuma/scripts/workspace.sh rofi"
+        "LEFTMETA+LEFTALT":
+          command: "~/.config/fusuma/scripts/workspace.sh rename"
+        LEFTSHIFT:
+          command: 'i3-msg scratchpad show'
+
+    down:
+      command: 'xdotool click 1 && i3-msg fullscreen disable'
+      keypress:
+        LEFTALT:
+          command: 'i3-msg "move down 50px"'
+        LEFTMETA:
+          command: 'i3-msg floating disable'
+        LEFTSHIFT:
+          command: 'i3-msg scratchpad show'
+
+  4: # Four-finger gestures
+    left:
+      command: 'i3-msg workspace next'
+      keypress:
+        LEFTMETA:
+          command: "~/.config/fusuma/scripts/workspace.sh move next"
+
+    right:
+      command: 'i3-msg workspace prev'
+      keypress:
+        LEFTMETA:
+          command: "~/.config/fusuma/scripts/workspace.sh move prev"
+
+    up:
+      command: "~/.config/rofi/scripts/launcher.sh"
+      keypress:
+        LEFTMETA:
+          command: "~/.config/rofi/scripts/launcher_win.sh"
+        "LEFTMETA+LEFTSHIFT":
+          command: "~/.config/fusuma/scripts/workspace.sh rofi"
+        "LEFTMETA+LEFTALT":
+          command: "~/.config/fusuma/scripts/workspace.sh rename"
+
+    down:
+      command: 'xdotool key Escape'
+      keypress:
+        LEFTMETA:
+          command: 'xdotool key Escape'
+
+pinch:
+  4:
+    in:
+      command: "~/.config/rofi/scripts/launcher_win.sh"
+
+rotate:
+  2:
+    clockwise:
+      command: 'xdotool key XF86AudioRaiseVolume'
+    counterclockwise:
+      command: 'xdotool key XF86AudioLowerVolume'
+
+hold:
+  3:
+    keypress:
+      LEFTMETA:
+        command: 'xdotool click 1'
+
+# ================================
+# Gesture Sensitivity / Timings
+# ================================
+threshold:
+  swipe: 0.4
+  pinch: 0.4
+  rotate: 0.4
+
+interval:
+  swipe: 0.8
+  pinch: 0.1
+  rotate: 0.1

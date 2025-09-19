@@ -76,7 +76,7 @@ font-3 = Weather Icons:style=Regular:size=10;2
 ; Module layout
 modules-left = i3 separator cpu
 modules-center = date
-modules-right = wifi separator memory separator volume 
+modules-right = wifi separator memory volume separator battery
 
 ; System tray
 tray-position = right
@@ -132,8 +132,7 @@ enable-scroll = false
 ; Mode label (resize, etc.)
 label-mode = %mode%
 label-mode-padding = 2
-label-mode-foreground = ${colors.foreground}
-label-mode-background = ${colors.warning}
+label-mode-foreground = ${colors.warning}
 
 ; Focused workspace
 label-focused = %index%
@@ -173,17 +172,17 @@ interval = 2
 warn-percentage = 85
 
 ; Format
-format = <label> <ramp-coreload>
+format = %{A1:alacritty -e htop:}<label> <ramp-coreload>%{A}
 format-foreground = ${colors.foreground}
 format-background = ${colors.background}
 
-format-warn = <label-warn> <ramp-coreload>
+format-warn = %{A1:alacritty -e htop:}<label-warn> <ramp-coreload>%{A}
 format-warn-foreground = ${colors.warning}
 format-warn-background = ${colors.background}
 
 ; Labels
 label = "# CPU %percentage%%"
-label-warn = "CPU %percentage%%!"
+label-warn = "# CPU %percentage%%!"
 
 ; Core load ramp
 ramp-coreload-spacing = 0
@@ -236,11 +235,11 @@ interface-type = wireless
 interval = 5
 
 ; Format
-format-connected = <label-connected>
+format-connected = %{A1:alacritty -e nmtui:}<label-connected>%{A}
 format-connected-foreground = ${colors.foreground}
 format-connected-background = ${colors.background}
 
-format-disconnected = <label-disconnected>
+format-disconnected = %{A1:alacritty -e nmtui:}<label-disconnected>%{A}
 format-disconnected-foreground = ${colors.error}
 format-disconnected-background = ${colors.background}
 
@@ -271,8 +270,11 @@ format-muted-foreground = ${colors.error}
 format-muted-background = ${colors.background}
 
 ; Labels
-label-volume = %percentage%%
+label-volume = VOL %percentage%%
 label-muted = MUTED
+
+; Clicks
+click-right = pavucontrol
 
 ################################################################################
 # DATE & TIME
@@ -293,6 +295,43 @@ format-padding = 1
 
 label = %time%
 label-font = 1
+
+################################################################################
+# BATTERY
+################################################################################
+
+[module/battery]
+type = internal/battery
+battery = BAT0
+adapter = ADP1
+full-at = 98
+low-at = 30
+poll-interval = 30
+
+format-charging = %{A1:~/.config/rofi/applets/bin/battery.sh:}<label-charging>%{A}
+format-charging-foreground = #a3be8c
+format-charging-background = ${colors.background}
+
+format-discharging = %{A1:~/.config/rofi/applets/bin/battery.sh:}<label-discharging>%{A}
+format-discharging-foreground = ${colors.foreground}
+format-discharging-background = ${colors.background}
+
+; Full battery format
+format-full = %{A1:~/.config/rofi/applets/bin/battery.sh:}<label-full>%{A}
+format-full-foreground = #a3be8c
+format-full-background = ${colors.background}
+format-full-padding = 1
+
+; Low battery format
+format-low = %{A1:~/.config/rofi/applets/bin/battery.sh:}<label-low>%{A}
+format-low-foreground = #bf616a
+format-low-background = ${colors.background}
+
+; Labels with tokens
+label-charging = %percentage%%
+label-discharging = %percentage%%
+label-full = Full
+label-low = LOW %percentage%%
 
 ################################################################################
 # ADDITIONAL MODULES

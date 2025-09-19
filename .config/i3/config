@@ -19,6 +19,9 @@ font pango:Hack 9
 # Floating modifier
 floating_modifier $mod
 
+focus_follows_mouse no
+smart_gaps on
+
 ################################################################################
 # APPLICATION VARIABLES
 ################################################################################
@@ -53,7 +56,7 @@ set $ws10 "10"
 ################################################################################
 
 # Window borders
-for_window [class="^.*"] border pixel 1
+for_window [class="^.*"] border pixel 0
 
 # Color scheme - Professional Black Theme
 # class                 border  backgr. text    indicator child_border
@@ -75,17 +78,40 @@ bindsym $mod+Return exec $term
 bindsym $mod+Shift+Return exec $browser
 
 # Application launcher
-bindsym $mod+space exec "rofi -show drun"
-bindsym ctrl+space exec "rofi -show combi -modi window,run,combi -combi-modi window,run"
+bindsym $mod+space exec "~/.config/rofi/scripts/launcher_app.sh"
+bindsym ctrl+space exec "~/.config/rofi/scripts/launcher.sh"
 
 # Calculator
 bindsym $mod+Shift+p exec $calculator
 
 # Power menu
-bindsym XF86PowerOff exec ~/.config/rofi/powermenu.sh
+bindsym XF86PowerOff exec ~/.config/rofi/scripts/powermenu.sh
 
 # Kill focused window
 bindsym $mod+q kill
+
+################################################################################
+# KEY BINDINGS - SCREENSHOTS
+################################################################################
+
+bindsym $modsec+Shift+4 exec "xfce4-screenshooter -r"
+bindsym $modsec+Shift+3 exec "xfce4-screenshooter -f"
+bindsym $modsec+Shift+5 exec "xfce4-screenshooter"
+
+################################################################################
+# KEY BINDINGS - SCRATCHPAD
+################################################################################
+
+bindsym $mod+minus scratchpad show
+bindsym $mod+Shift+minus move scratchpad
+
+################################################################################
+# KEY BINDINGS - WORKSPACE NAVIGATION
+################################################################################
+
+# Next/previous workspace
+bindsym $mod+Tab workspace next
+bindsym $mod+Shift+Tab workspace prev
 
 ################################################################################
 # KEY BINDINGS - WINDOW MANAGEMENT
@@ -98,15 +124,14 @@ bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
 # Move windows
-bindsym $mod+Shift+Left move left
-bindsym $mod+Shift+Down move down
-bindsym $mod+Shift+Up move up
-bindsym $mod+Shift+Right move right
-
+bindsym $mod+Shift+Left move left 50px
+bindsym $mod+Shift+Down move down 50px
+bindsym $mod+Shift+Up move up 50px
+bindsym $mod+Shift+Right move right 50px
+ 
 # Split orientations
 bindsym $mod+h split h
-bindsym $mod+v split v
-bindsym $mod+t split toggle
+bindsym $mod+k split v
 
 # Fullscreen
 bindsym $mod+f fullscreen toggle
@@ -124,7 +149,18 @@ bindsym $mod+Shift+space floating toggle
 bindsym $mod+Mod1+space focus mode_toggle
 
 # Focus parent container
-bindsym $mod+a focus parent
+# bindsym $mod+a focus parent
+
+################################################################################
+# KEY BINDINGS - REMAPPING
+################################################################################
+
+# Copy selected text to clipboard
+bindsym $mod+c exec --no-startup-id sh -c "xclip -selection primary -o | xclip -selection clipboard -i"
+
+# Paste clipboard contents
+bindsym $mod+v exec --no-startup-id ~/.config/i3/scripts/clipmenu.sh
+bindsym $mod+Shift+v exec --no-startup-id CM_LAUNCHER="rofi" CM_OUTPUT_CLIP=0 clipmenu -theme ~/.config/rofi/custom/clipmenu.rasi
 
 ################################################################################
 # KEY BINDINGS - WORKSPACES
@@ -169,11 +205,11 @@ bindsym $mod+l exec "sleep 0.1 && i3lock --blur 5"
 # Audio controls
 bindsym XF86AudioRaiseVolume exec "pamixer -ui 3 && pamixer --get-volume > /tmp/xobpipe"
 bindsym XF86AudioLowerVolume exec "pamixer -ud 3 && pamixer --get-volume > /tmp/xobpipe"
-bindsym XF86AudioMute exec "amixer sset Master toggle | sed -En '/\[on\]/ s/.*\[([0-9]+)%\].*/\1/ p; /\[off\]/ s/.*/0/p' | head -1 > /tmp/xobpipe"
+bindsym XF86AudioMute exec "pamixer -t && pamixer --get-volume > /tmp/xobpipe"
 
 # Brightness controls
-bindsym XF86KbdBrightnessUp exec ~/.config/i3/scripts/bright_up.sh
-bindsym XF86KbdBrightnessDown exec ~/.config/i3/scripts/bright_down.sh
+bindsym XF86MonBrightnessUp exec brightnessctl -d 'intel_backlight' s +10%
+bindsym XF86MonBrightnessDown exec brightnessctl -d 'intel_backlight' s 10%-
 
 ################################################################################
 # RESIZE MODE
@@ -186,6 +222,14 @@ mode "resize" {
         bindsym Up resize shrink height 5 px or 5 ppt
         bindsym Right resize grow width 5 px or 5 ppt
 
+        # Fixed size presets
+        bindsym $mod+e resize set width 800 px height 600 px, move position center, mode "default"
+        bindsym $mod+u resize set width 1000 px height 600 px, move position center, mode "default"
+        bindsym $mod+Return resize set width 1200 px height 720 px, move position center, mode "default"
+
+        # Move floating window to the center of the screen
+        bindsym $mod+c move position center
+
         # Exit resize mode
         bindsym Return mode "default"
         bindsym Escape mode "default"
@@ -193,6 +237,41 @@ mode "resize" {
 }
 
 bindsym $mod+r mode "resize"
+
+################################################################################
+# WINDOW RULES - SIDEBAR PANELS
+################################################################################
+
+# Sidepanel floating rules
+for_window [class="sidepanel-firefox"] floating enable, \
+    move position 1050 -89, \
+    resize set 530 1000, \
+    move scratchpad, \
+    sticky enable, \
+    border pixel 0, \
+    opacity 0.95
+
+for_window [class="sidepanel-term"] floating enable, \
+    move position -10 100, \
+    resize set 300 700, \
+    move scratchpad, \
+    sticky enable, \
+    border pixel 0, \
+    opacity 0.95
+
+# Ensure always stays on floating
+for_window [class="sidepanel-firefox"] focus, floating enable
+for_window [class="sidepanel-term"] focus, floating enable
+
+# Move to dedicated workspace
+for_window [class="sidepanel-firefox"] move to workspace special:sidepanel
+for_window [class="sidepanel-term"] move to workspace special:sidepanel
+# Keybindings
+bindsym $mod+Shift+t exec alacritty --class sidepanel-term, scratchpad show
+bindsym $mod+t [class="sidepanel-term"] scratchpad show
+
+bindsym $mod+Shift+period exec firefox --new-instance --no-remote --profile ~/.mozilla/firefox/eatonz9s.firefox-sidepanel --class sidepanel-firefox, scratchpad show
+bindsym $mod+period [class="sidepanel-firefox"] scratchpad show
 
 ################################################################################
 # WINDOW RULES - FLOATING WINDOWS
@@ -204,6 +283,7 @@ for_window [class="mpv"] floating enable
 for_window [class="imv"] floating enable
 for_window [class="zenity"] floating enable
 for_window [class="cachyos-welcome"] floating enable
+for_window [class="pavucontrol"] floating enable
 
 ################################################################################
 # WINDOW RULES - BORDERLESS WINDOWS
@@ -222,6 +302,10 @@ exec --no-startup-id picom
 exec --no-startup-id redshift
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec --no-startup-id dex -a -s /etc/xdg/autostart/:~/.config/autostart/
+
+exec --no-startup-id fusuma -d
+exec --no-startup-id i3-battery-popup
+exec_always mkfifo /tmp/xobpipe && tail -f /tmp/xobpipe | xob -t 2170 & disown
 
 # Battery monitoring
 exec --no-startup-id i3-battery-popup
@@ -242,12 +326,14 @@ exec feh --bg-fill ~/.config/i3/wallpaper.png
 # Status bar
 exec_always --no-startup-id ~/.config/polybar/launch.sh
 
+# Auto Tiling
+exec_always --no-startup-id autotiling
+
 ################################################################################
 # WORKSPACE LAYOUT
 ################################################################################
 
 # Default workspace setup
-exec --no-startup-id "i3-msg 'workspace 1; exec alacritty'"
 
 ################################################################################
 # OPTIONAL CONFIGURATIONS
