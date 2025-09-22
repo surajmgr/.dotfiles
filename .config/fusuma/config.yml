@@ -1,3 +1,48 @@
+###START###
+# Shortcuts
+# Swipe Left (3): Switch to next/new workspace
+# Alt_L + Swipe Left (3): Move window left by 50 pixels
+# Super_L + Swipe Left (3): Switch to last active workspace
+# Super_L + Alt_L + Swipe Left (3): Simulate left mouse button press (drag)
+#
+# Swipe Right (3): Switch to previous/last active workspace
+# Alt_L + Swipe Right (3): Move window right by 50 pixels
+# Super_L + Swipe Right (3): Switch to first active workspace
+#
+# Swipe Up (3): Left click + enable fullscreen
+# Alt_L + Swipe Up (3): Move window up by 50 pixels
+# Super_L + Swipe Up (3): Enable floating mode
+# Super_L + Shift_L + Swipe Up (3): Move to workspace x
+# Super_L + Alt_L + Swipe Up (3): Rename workspace
+# Shift_L + Swipe Up (3): Toggle scratchpad
+#
+# Swipe Down (3): Click & disable fullscreen
+# Alt_L + Swipe Down (3): Move window down by 50 pixels
+# Super_L + Swipe Down (3): Disable floating mode
+# Shift_L + Swipe Down (3): Toggle scratchpad
+#
+# Swipe Left (4): Switch to next active workspace
+# Super_L + Swipe Left (4): Move window to next active/new workspace
+#
+# Swipe Right (4): Switch to previous workspace
+# Super_L + Swipe Right (4): Move window to previous/last workspace
+#
+# Swipe Up (4): Launch Rofi app launcher
+# Super_L + Swipe Up (4): Launch Windows Launcher
+# Super_L + Shift_L + Swipe Up (4): Go to workspace x
+# Super_L + Alt_L + Swipe Up (4): Rename workspace
+#
+# Swipe Down (4): Escape key
+# Super_L + Swipe Down (4): Escape key
+#
+# Pinch In (4): Launch Windows Launcher
+#
+# Rotate Clockwise (2): Raise volume
+# Rotate Counterclockwise (2): Lower volume
+#
+# Hold (3) + Super_L: Left mouse click
+###END###
+
 swipe:
   3: # Three-finger gestures
     left:

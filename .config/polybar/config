@@ -38,6 +38,9 @@ urgent = #ff3333
 [bar/main]
 monitor = ${env:MONITOR:}
 
+; IPC
+enable-ipc = true
+
 ; Dimensions
 width = 100%
 height = 24
@@ -246,6 +249,16 @@ format-disconnected-background = ${colors.background}
 ; Labels
 label-connected = "%downspeed% (%signal%%)"
 label-disconnected = "Disconnected"
+
+################################################################################
+# IPC - INTER-PROCESS COMMUNICATION
+################################################################################
+
+# Auto hide
+[module/hideshow]
+type = custom/ipc
+hook-0 = ~/.config/polybar/scripts/hideshow.py
+initial = 1
 
 ################################################################################
 # AUDIO

@@ -71,81 +71,95 @@ client.background       #000000
 # KEY BINDINGS - APPLICATIONS
 ################################################################################
 
-# Terminal
+# Show keyboard shortcuts and gestures help
+bindsym $mod+backslash exec ~/.config/i3/scripts/shortcuts.sh
+
+# Open terminal
 bindsym $mod+Return exec $term
 
-# Browser
+# Open web browser
 bindsym $mod+Shift+Return exec $browser
 
-# Application launcher
+# Launch application search menu
 bindsym $mod+space exec "~/.config/rofi/scripts/launcher_app.sh"
+# Launch universal search (apps/run/files/windows)
 bindsym ctrl+space exec "~/.config/rofi/scripts/launcher.sh"
 
-# Calculator
+# Open calculator
 bindsym $mod+Shift+p exec $calculator
 
-# Power menu
+# Show power menu (shutdown/restart/logout options)
 bindsym XF86PowerOff exec ~/.config/rofi/scripts/powermenu.sh
 
-# Kill focused window
+# Close focused window
 bindsym $mod+q kill
 
 ################################################################################
 # KEY BINDINGS - SCREENSHOTS
 ################################################################################
 
+# Take screenshot of selected area
 bindsym $modsec+Shift+4 exec "xfce4-screenshooter -r"
+# Take fullscreen screenshot
 bindsym $modsec+Shift+3 exec "xfce4-screenshooter -f"
+# Open interactive screenshot tool
 bindsym $modsec+Shift+5 exec "xfce4-screenshooter"
 
 ################################################################################
 # KEY BINDINGS - SCRATCHPAD
 ################################################################################
 
+# Show/hide scratchpad window
 bindsym $mod+minus scratchpad show
+# Move focused window to scratchpad
 bindsym $mod+Shift+minus move scratchpad
 
 ################################################################################
 # KEY BINDINGS - WORKSPACE NAVIGATION
 ################################################################################
 
-# Next/previous workspace
+# Switch to next workspace
 bindsym $mod+Tab workspace next
+# Switch to previous workspace
 bindsym $mod+Shift+Tab workspace prev
 
 ################################################################################
 # KEY BINDINGS - WINDOW MANAGEMENT
 ################################################################################
 
-# Focus windows
+# c_c: $mod+[Left/Down/Up/Right]; Move focus between windows
 bindsym $mod+Left focus left
 bindsym $mod+Down focus down
 bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
-# Move windows
+# c_c: $mod+Shift+[Left/Down/Up/Right]; Move window in direction
 bindsym $mod+Shift+Left move left 50px
 bindsym $mod+Shift+Down move down 50px
 bindsym $mod+Shift+Up move up 50px
 bindsym $mod+Shift+Right move right 50px
  
-# Split orientations
+# Split container horizontally (side by side)
 bindsym $mod+h split h
+# Split container vertically (top and bottom)
 bindsym $mod+k split v
 
-# Fullscreen
+# Toggle window fullscreen mode
 bindsym $mod+f fullscreen toggle
 
-# Container layouts
+# Set layout to stacking (windows stack on top of each other)
 bindsym $mod+s layout stacking
+# Set layout to tabbed (windows show as tabs)
 bindsym $mod+w layout tabbed
+# Toggle between split layouts
 bindsym $mod+e layout toggle split
 
-# Sticky windows
+# Make window stick to all workspaces
 bindsym $mod+Shift+w sticky toggle
 
-# Floating toggle
+# Toggle window between floating and tiled mode
 bindsym $mod+Shift+space floating toggle
+# Toggle focus between floating and tiled windows
 bindsym $mod+Mod1+space focus mode_toggle
 
 # Focus parent container
@@ -155,18 +169,22 @@ bindsym $mod+Mod1+space focus mode_toggle
 # KEY BINDINGS - REMAPPING
 ################################################################################
 
-# Copy selected text to clipboard
+# Copy selected text from primary selection to clipboard
 bindsym $mod+c exec --no-startup-id sh -c "xclip -selection primary -o | xclip -selection clipboard -i"
 
-# Paste clipboard contents
+# Paste from clipboard using simple script
 bindsym $mod+v exec --no-startup-id ~/.config/i3/scripts/clipmenu.sh
+# Show clipboard history menu
 bindsym $mod+Shift+v exec --no-startup-id CM_LAUNCHER="rofi" CM_OUTPUT_CLIP=0 clipmenu -theme ~/.config/rofi/custom/clipmenu.rasi
+
+# Terminal History Search
+bindsym $mod+Shift+semicolon exec --no-startup-id ~/.config/i3/scripts/term-history.py
 
 ################################################################################
 # KEY BINDINGS - WORKSPACES
 ################################################################################
 
-# Switch to workspace
+# c_c: $mod+[1-0]; Switch to workspace 1-10
 bindsym $mod+1 workspace number $ws1
 bindsym $mod+2 workspace number $ws2
 bindsym $mod+3 workspace number $ws3
@@ -178,7 +196,7 @@ bindsym $mod+8 workspace number $ws8
 bindsym $mod+9 workspace number $ws9
 bindsym $mod+0 workspace number $ws10
 
-# Move container to workspace
+# c_c: $mod+Shift+[1-0]; Move focused window to workspace 1-10
 bindsym $mod+Shift+1 move container to workspace number $ws1
 bindsym $mod+Shift+2 move container to workspace number $ws2
 bindsym $mod+Shift+3 move container to workspace number $ws3
@@ -194,21 +212,26 @@ bindsym $mod+Shift+0 move container to workspace number $ws10
 # KEY BINDINGS - SYSTEM CONTROLS
 ################################################################################
 
-# i3 system controls
+# Reload i3 configuration file
 bindsym $mod+Shift+c reload
+# Restart i3 window manager
 bindsym $mod+Shift+r restart
+# Exit i3 and end X session
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'Exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
-# Screen lock
+# Lock screen with blur effect
 bindsym $mod+l exec "sleep 0.1 && i3lock --blur 5"
 
-# Audio controls
+# Increase system volume
 bindsym XF86AudioRaiseVolume exec "pamixer -ui 3 && pamixer --get-volume > /tmp/xobpipe"
+# Decrease system volume
 bindsym XF86AudioLowerVolume exec "pamixer -ud 3 && pamixer --get-volume > /tmp/xobpipe"
+# Toggle mute/unmute audio
 bindsym XF86AudioMute exec "pamixer -t && pamixer --get-volume > /tmp/xobpipe"
 
-# Brightness controls
+# Increase screen brightness
 bindsym XF86MonBrightnessUp exec brightnessctl -d 'intel_backlight' s +10%
+# Decrease screen brightness
 bindsym XF86MonBrightnessDown exec brightnessctl -d 'intel_backlight' s 10%-
 
 ################################################################################
@@ -216,26 +239,29 @@ bindsym XF86MonBrightnessDown exec brightnessctl -d 'intel_backlight' s 10%-
 ################################################################################
 
 mode "resize" {
-        # Resize with arrow keys
+        # c_c: Left/Down/Up/Right; Resize window smaller/taller/shorter/wider
         bindsym Left resize shrink width 5 px or 5 ppt
         bindsym Down resize grow height 5 px or 5 ppt
         bindsym Up resize shrink height 5 px or 5 ppt
         bindsym Right resize grow width 5 px or 5 ppt
 
-        # Fixed size presets
+        # Resize to small window (800x600) and center
         bindsym $mod+e resize set width 800 px height 600 px, move position center, mode "default"
+        # Resize to medium window (1000x600) and center
         bindsym $mod+u resize set width 1000 px height 600 px, move position center, mode "default"
+        # Resize to large window (1200x720) and center
         bindsym $mod+Return resize set width 1200 px height 720 px, move position center, mode "default"
 
-        # Move floating window to the center of the screen
+        # Center window without changing size
         bindsym $mod+c move position center
 
-        # Exit resize mode
+        # c_c: Return/Escape/$mod+r; Exit resize mode
         bindsym Return mode "default"
         bindsym Escape mode "default"
         bindsym $mod+r mode "default"
 }
 
+# Enter window resize mode
 bindsym $mod+r mode "resize"
 
 ################################################################################
@@ -266,11 +292,15 @@ for_window [class="sidepanel-term"] focus, floating enable
 # Move to dedicated workspace
 for_window [class="sidepanel-firefox"] move to workspace special:sidepanel
 for_window [class="sidepanel-term"] move to workspace special:sidepanel
-# Keybindings
-bindsym $mod+Shift+t exec alacritty --class sidepanel-term, scratchpad show
-bindsym $mod+t [class="sidepanel-term"] scratchpad show
 
+# Launch/toggle terminal sidepanel
+bindsym $mod+Shift+t exec alacritty --class sidepanel-term, scratchpad show
+# Launch/toggle Firefox sidepanel
 bindsym $mod+Shift+period exec firefox --new-instance --no-remote --profile ~/.mozilla/firefox/eatonz9s.firefox-sidepanel --class sidepanel-firefox, scratchpad show
+
+# Show terminal sidepanel
+bindsym $mod+t [class="sidepanel-term"] scratchpad show
+# Show Firefox sidepanel
 bindsym $mod+period [class="sidepanel-firefox"] scratchpad show
 
 ################################################################################
@@ -321,7 +351,7 @@ exec_always mkfifo /tmp/xobpipe && tail -f /tmp/xobpipe | xob -t 2170 & disown
 exec xrandr --output HDMI-1 --mode 1920x1080 --rate 60 --scale 1x1
 
 # Wallpaper (black/dark theme)
-exec feh --bg-fill ~/.config/i3/wallpaper.png
+exec --no-startup-id feh --bg-fill ~/.config/i3/wallpaper.png
 
 # Status bar
 exec_always --no-startup-id ~/.config/polybar/launch.sh
@@ -329,6 +359,18 @@ exec_always --no-startup-id ~/.config/polybar/launch.sh
 # Auto Tiling
 exec_always --no-startup-id autotiling
 
+################################################################################
+# WORKSPACE LAYOUT
+################################################################################
+
+# Toggle polybar visibility
+bindsym $mod+Shift+s exec --no-startup-id polybar-msg cmd toggle
+# exec_always --no-startup-id ~/.config/polybar/scripts/edge-reveal.sh
+# exec_always --no-startup-id i3-msg -t subscribe -m '[ "workspace" ]' | while read; do \
+#     polybar-msg action "#hideshow.hook.0"; \
+# done
+#
+#
 ################################################################################
 # WORKSPACE LAYOUT
 ################################################################################

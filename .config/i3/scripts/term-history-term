@@ -1,0 +1,413 @@
+#!/usr/bin/env python3
+"""
+Interactive Terminal History Viewer
+A beautiful, interactive command history browser with search and edit capabilities
+"""
+
+import os
+import sys
+import subprocess
+import tempfile
+from pathlib import Path
+from datetime import datetime
+import re
+import argparse
+
+class Colors:
+    """ANSI color codes matching the Rofi theme"""
+    RESET = '\033[0m'
+    BOLD = '\033[1m'
+    DIM = '\033[2m'
+    
+    # Main colors (adjust these to match your terminal theme)
+    BACKGROUND = '\033[48;5;235m'      # Dark background
+    FOREGROUND = '\033[38;5;251m'      # Light gray text
+    SELECTED = '\033[48;5;4m'          # Blue selection
+    BORDER = '\033[38;5;4m'            # Blue border
+    ACCENT = '\033[38;5;6m'            # Cyan accent
+    SUBTLE = '\033[38;5;238m'          # Subtle gray
+    
+    # Status colors
+    SUCCESS = '\033[38;5;2m'           # Green
+    WARNING = '\033[38;5;3m'           # Yellow
+    ERROR = '\033[38;5;1m'             # Red
+
+class HistoryViewer:
+    def __init__(self):
+        self.history_file = self.get_history_file()
+        self.commands = []
+        self.filtered_commands = []
+        self.current_selection = 0
+        self.search_query = ""
+        self.show_timestamps = True
+        self.show_numbers = True
+        
+    def get_history_file(self):
+        """Get the appropriate history file based on shell"""
+        shell = os.environ.get('SHELL', '').split('/')[-1]
+        home = Path.home()
+        
+        if shell == 'fish':
+            return home / '.local/share/fish/fish_history'
+        elif shell == 'zsh':
+            return home / '.zsh_history'
+        elif shell == 'bash':
+            return home / '.bash_history'
+        else:
+            # Try common locations
+            for hist_file in ['.local/share/fish/fish_history', '.zsh_history', '.bash_history', '.history']:
+                path = home / hist_file
+                if path.exists():
+                    return path
+        
+        return home / '.bash_history'
+    
+    def load_history(self):
+        """Load command history from file"""
+        if not self.history_file.exists():
+            print(f"{Colors.ERROR}History file not found: {self.history_file}{Colors.RESET}")
+            return False
+            
+        try:
+            with open(self.history_file, 'r', encoding='utf-8', errors='ignore') as f:
+                content = f.read()
+            
+            self.commands = []
+            
+            # Parse Fish history format
+            if 'fish_history' in str(self.history_file):
+                entries = content.split('- cmd: ')
+                for i, entry in enumerate(entries[1:], 1):  # Skip first empty entry
+                    lines = entry.strip().split('\n')
+                    if not lines:
+                        continue
+                    
+                    command = lines[0].strip()
+                    timestamp = None
+                    
+                    # Look for timestamp in subsequent lines
+                    for line in lines[1:]:
+                        if line.strip().startswith('when: '):
+                            try:
+                                ts = int(line.strip().split('when: ')[1])
+                                timestamp = datetime.fromtimestamp(ts)
+                            except (ValueError, IndexError):
+                                pass
+                            break
+                    
+                    if command:
+                        self.commands.append({
+                            'number': len(self.commands) + 1,
+                            'command': command,
+                            'timestamp': timestamp,
+                            'original_line': i
+                        })
+            else:
+                # Parse bash/zsh history format
+                lines = content.splitlines()
+                for i, line in enumerate(lines):
+                    line = line.strip()
+                    if not line:
+                        continue
+                        
+                    # Parse zsh extended history format
+                    timestamp = None
+                    command = line
+                    
+                    if line.startswith(': ') and ';' in line:
+                        # zsh format: : timestamp:duration;command
+                        try:
+                            parts = line[2:].split(';', 1)
+                            if len(parts) == 2:
+                                ts_part = parts[0].split(':')[0]
+                                timestamp = datetime.fromtimestamp(int(ts_part))
+                                command = parts[1]
+                        except (ValueError, IndexError):
+                            pass
+                    
+                    self.commands.append({
+                        'number': len(self.commands) + 1,
+                        'command': command,
+                        'timestamp': timestamp,
+                        'original_line': i + 1
+                    })
+            
+            # Reverse to show most recent first
+            self.commands.reverse()
+            self.filtered_commands = self.commands.copy()
+            return True
+            
+        except Exception as e:
+            print(f"{Colors.ERROR}Error reading history: {e}{Colors.RESET}")
+            return False
+    
+    def filter_commands(self, query):
+        """Filter commands based on search query"""
+        self.search_query = query
+        if not query:
+            self.filtered_commands = self.commands.copy()
+        else:
+            self.filtered_commands = [
+                cmd for cmd in self.commands 
+                if query.lower() in cmd['command'].lower()
+            ]
+        self.current_selection = 0
+    
+    def get_terminal_size(self):
+        """Get terminal dimensions"""
+        try:
+            size = os.get_terminal_size()
+            return size.columns, size.lines
+        except:
+            return 80, 24
+    
+    def clear_screen(self):
+        """Clear terminal screen"""
+        os.system('clear' if os.name == 'posix' else 'cls')
+    
+    def draw_border(self, width, title=""):
+        """Draw a bordered box"""
+        top_border = f"╭{'─' * (width - 2)}╮"
+        bottom_border = f"╰{'─' * (width - 2)}╯"
+        
+        if title:
+            title_len = len(title)
+            if title_len + 4 < width:
+                padding = (width - title_len - 4) // 2
+                top_border = f"╭{'─' * padding}[ {title} ]{'─' * (width - padding - title_len - 6)}╮"
+        
+        return top_border, bottom_border
+    
+    def truncate_text(self, text, max_width):
+        """Truncate text to fit width"""
+        if len(text) <= max_width:
+            return text
+        return text[:max_width - 3] + "..."
+    
+    def format_command_line(self, cmd, width, is_selected=False):
+        """Format a single command line"""
+        available_width = width - 4  # Account for borders and padding
+        
+        # Build the display parts
+        parts = []
+        
+        if self.show_numbers:
+            num_str = f"{cmd['number']:>4} "
+            parts.append((num_str, Colors.SUBTLE))
+            available_width -= len(num_str)
+        
+        if self.show_timestamps and cmd['timestamp']:
+            time_str = cmd['timestamp'].strftime("%H:%M ")
+            parts.append((time_str, Colors.ACCENT))
+            available_width -= len(time_str)
+        
+        # Command text with syntax highlighting
+        command = cmd['command']
+        if self.search_query:
+            # Highlight search terms
+            pattern = re.escape(self.search_query)
+            command = re.sub(f'({pattern})', f'{Colors.WARNING}\\1{Colors.RESET}{Colors.FOREGROUND}', 
+                           command, flags=re.IGNORECASE)
+        
+        command = self.truncate_text(command, available_width)
+        parts.append((command, Colors.FOREGROUND))
+        
+        # Combine parts
+        line = ""
+        for text, color in parts:
+            line += f"{color}{text}{Colors.RESET}"
+        
+        # Selection highlighting
+        if is_selected:
+            line = f"{Colors.SELECTED}{Colors.BOLD} {line.ljust(width - 3)} {Colors.RESET}"
+        else:
+            line = f" {line}"
+        
+        return line
+    
+    def display(self):
+        """Display the history viewer interface"""
+        cols, rows = self.get_terminal_size()
+        self.clear_screen()
+        
+        # Header
+        title = f"📋 Terminal History ({len(self.filtered_commands)} commands)"
+        top_border, bottom_border = self.draw_border(cols, title)
+        
+        print(f"{Colors.BORDER}{top_border}{Colors.RESET}")
+        
+        # Search bar
+        search_display = f"Search: {self.search_query}" if self.search_query else "Search: (type to filter)"
+        search_line = f"│ 🔍 {search_display}".ljust(cols - 1) + "│"
+        print(f"{Colors.BORDER}{search_line}{Colors.RESET}")
+        
+        # Separator
+        sep = f"├{'─' * (cols - 2)}┤"
+        print(f"{Colors.BORDER}{sep}{Colors.RESET}")
+        
+        # Command list
+        display_height = rows - 8  # Account for header, footer, borders
+        start_idx = max(0, self.current_selection - display_height // 2)
+        end_idx = min(len(self.filtered_commands), start_idx + display_height)
+        
+        for i in range(start_idx, end_idx):
+            is_selected = (i == self.current_selection)
+            cmd = self.filtered_commands[i]
+            line = self.format_command_line(cmd, cols - 2, is_selected)
+            print(f"{Colors.BORDER}│{Colors.RESET}{line}{Colors.BORDER}│{Colors.RESET}")
+        
+        # Fill remaining space
+        for _ in range(display_height - (end_idx - start_idx)):
+            empty_line = f"│{' ' * (cols - 2)}│"
+            print(f"{Colors.BORDER}{empty_line}{Colors.RESET}")
+        
+        # Footer
+        print(f"{Colors.BORDER}{bottom_border}{Colors.RESET}")
+        
+        # Help text
+        help_text = "↑/↓: Navigate  Enter: Execute  e: Edit  t: Toggle timestamps  n: Toggle numbers  q: Quit"
+        help_line = f" {help_text}".ljust(cols)
+        print(f"{Colors.SUBTLE}{help_line}{Colors.RESET}")
+    
+    def get_selected_command(self):
+        """Get currently selected command"""
+        if 0 <= self.current_selection < len(self.filtered_commands):
+            return self.filtered_commands[self.current_selection]
+        return None
+    
+    def execute_command(self, command):
+        """Execute the selected command"""
+        print(f"\n{Colors.SUCCESS}Executing: {Colors.BOLD}{command}{Colors.RESET}")
+        print(f"{Colors.SUBTLE}{'─' * 50}{Colors.RESET}")
+        
+        # For Fish shell, use fish -c to execute
+        shell = os.environ.get('SHELL', '').split('/')[-1]
+        if shell == 'fish':
+            subprocess.run(['fish', '-c', command], cwd=os.getcwd())
+        else:
+            # Add to shell history and execute
+            subprocess.run(['bash', '-c', f'history -s "{command}"; {command}'], 
+                          cwd=os.getcwd())
+    
+    def edit_command(self, command):
+        """Edit command in nvim"""
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.sh', delete=False) as f:
+            f.write(command)
+            temp_file = f.name
+        
+        try:
+            # Open in nvim
+            subprocess.run(['nvim', temp_file])
+            
+            # Read the edited content
+            with open(temp_file, 'r') as f:
+                edited_command = f.read().strip()
+            
+            if edited_command and edited_command != command:
+                print(f"\n{Colors.SUCCESS}Execute edited command? {Colors.BOLD}{edited_command}{Colors.RESET}")
+                response = input(f"{Colors.ACCENT}[y/N]: {Colors.RESET}").lower()
+                if response == 'y':
+                    self.execute_command(edited_command)
+                    return True
+            
+        except FileNotFoundError:
+            print(f"{Colors.ERROR}nvim not found. Please install neovim.{Colors.RESET}")
+        finally:
+            # Clean up temp file
+            try:
+                os.unlink(temp_file)
+            except:
+                pass
+        
+        return False
+    
+    def run(self):
+        """Main interactive loop"""
+        if not self.load_history():
+            return 1
+        
+        print(f"{Colors.SUCCESS}Loaded {len(self.commands)} commands from {self.history_file}{Colors.RESET}")
+        
+        # Enable raw input mode
+        import termios, tty
+        old_settings = termios.tcgetattr(sys.stdin)
+        
+        try:
+            tty.setcbreak(sys.stdin.fileno())
+            
+            while True:
+                self.display()
+                
+                # Get key input
+                char = sys.stdin.read(1)
+                
+                if char == 'q':
+                    break
+                elif char == '\x1b':  # Escape sequence
+                    char += sys.stdin.read(2)
+                    if char == '\x1b[A':  # Up arrow
+                        if self.current_selection > 0:
+                            self.current_selection -= 1
+                    elif char == '\x1b[B':  # Down arrow
+                        if self.current_selection < len(self.filtered_commands) - 1:
+                            self.current_selection += 1
+                elif char == '\r' or char == '\n':  # Enter
+                    cmd = self.get_selected_command()
+                    if cmd:
+                        termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
+                        self.execute_command(cmd['command'])
+                        return 0
+                elif char == 'e':  # Edit
+                    cmd = self.get_selected_command()
+                    if cmd:
+                        termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
+                        if self.edit_command(cmd['command']):
+                            return 0
+                        tty.setcbreak(sys.stdin.fileno())
+                elif char == 't':  # Toggle timestamps
+                    self.show_timestamps = not self.show_timestamps
+                elif char == 'n':  # Toggle numbers
+                    self.show_numbers = not self.show_numbers
+                elif char == '/':  # Search
+                    termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
+                    query = input(f"\n{Colors.ACCENT}Search: {Colors.RESET}")
+                    self.filter_commands(query)
+                    tty.setcbreak(sys.stdin.fileno())
+                elif char.isprintable():  # Direct search
+                    termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
+                    query = char + input()
+                    self.filter_commands(query)
+                    tty.setcbreak(sys.stdin.fileno())
+                elif char == '\x7f':  # Backspace - clear search
+                    if self.search_query:
+                        self.filter_commands("")
+        
+        except KeyboardInterrupt:
+            pass
+        finally:
+            termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
+            self.clear_screen()
+        
+        return 0
+
+def main():
+    parser = argparse.ArgumentParser(description='Interactive Terminal History Viewer')
+    parser.add_argument('--no-timestamps', action='store_true', help='Hide timestamps')
+    parser.add_argument('--no-numbers', action='store_true', help='Hide line numbers')
+    parser.add_argument('--search', '-s', help='Initial search query')
+    
+    args = parser.parse_args()
+    
+    viewer = HistoryViewer()
+    
+    if args.no_timestamps:
+        viewer.show_timestamps = False
+    if args.no_numbers:
+        viewer.show_numbers = False
+    if args.search:
+        viewer.filter_commands(args.search)
+    
+    return viewer.run()
+
+if __name__ == '__main__':
+    sys.exit(main())
