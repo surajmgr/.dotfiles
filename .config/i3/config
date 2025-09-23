@@ -264,6 +264,8 @@ mode "resize" {
 # Enter window resize mode
 bindsym $mod+r mode "resize"
 
+for_window [class="mpvk"] resize set 1280 720, move position center
+
 ################################################################################
 # WINDOW RULES - SIDEBAR PANELS
 ################################################################################

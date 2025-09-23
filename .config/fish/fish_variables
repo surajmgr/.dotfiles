@@ -1,5 +1,10 @@
 # This file contains fish universal variable definitions.
 # VERSION: 3.0
+
+# Ani-Cli configuration
+SETUVAR --export ANI_CLI_PLAYER:mpv
+SETUVAR --export ANI_CLI_DOWNLOAD_DIR:\x7e/\x44ownloads/Anime
+
 SETUVAR __done_min_cmd_duration:10000
 SETUVAR __done_notification_urgency_level:low
 SETUVAR __fish_initialized:3800

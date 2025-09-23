@@ -99,6 +99,29 @@
 !.config/keyd/
 !.config/keyd/*
 
+# Custom scripts
+.config/custom/*
+!.config/custom/
+!.config/custom/*
+!.config/custom/*/*
+
+# MAL
+!.config/mal-cli/*
+!.config/mal-cli/
+!.config/mal-cli/*
+!.config/mal-cli/*/*
+
+# Kitty config
+.config/kitty/*
+!.config/kitty/
+!.config/kitty/*
+
+# MPV config
+.config/mpv/*
+!.config/mpv/
+!.config/mpv/*
+!.config/mpv/*/*
+!.config/mpv/*/*/*
 # Override unnecessary files; These forces git to ignore following files even if a previous rule would include them
 .env
 .DS_Store
