@@ -122,6 +122,19 @@
 !.config/mpv/*
 !.config/mpv/*/*
 !.config/mpv/*/*/*
+
+# ITerm2
+.config/iterm2/*
+!.config/iterm2/
+!.config/iterm2/*
+!.config/iterm2/Exports/*
+
+# Zed
+.config/zed/*
+!.config/zed/
+!.config/zed/settings.json
+!.config/zed/keymap.json
+
 # Override unnecessary files; These forces git to ignore following files even if a previous rule would include them
 .env
 .DS_Store

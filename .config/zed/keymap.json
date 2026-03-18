@@ -1,0 +1,8 @@
+[
+  {
+    "context": "(VimControl && !menu)",
+    "bindings": {
+      "g r d": "editor::GoToDefinition"
+    }
+  }
+]

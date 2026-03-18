@@ -22,3 +22,11 @@ end
 nvm use 22.19.0 > /dev/null 2>&1
 
 set -gx PATH $PATH ~/.local/share/gem/ruby/3.4.0/bin
+
+# Added by OrbStack: command-line tools and integration
+# This won't be added again if you remove it.
+source ~/.orbstack/shell/init2.fish 2>/dev/null || :
+
+test -e {$HOME}/.iterm2_shell_integration.fish ; and source {$HOME}/.iterm2_shell_integration.fish
+
+zoxide init fish --cmd cd | source

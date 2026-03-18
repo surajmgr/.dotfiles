@@ -1,7 +1,10 @@
 # This file contains fish universal variable definitions.
 # VERSION: 3.0
+SETUVAR --export ANDROID_HOME:/Users/surajpulami/Developer/DevelopmentKits/Android
 SETUVAR --export ANI_CLI_DOWNLOAD_DIR:\x7e/Downloads/Anime
 SETUVAR --export ANI_CLI_PLAYER:mpv
+SETUVAR --export EDITOR:nvim
+SETUVAR --export JAVA_HOME:/Library/Java/JavaVirtualMachines/zulu\x2d17\x2ejdk/Contents/Home
 SETUVAR __done_min_cmd_duration:10000
 SETUVAR __done_notification_urgency_level:low
 SETUVAR __fish_initialized:4300
@@ -36,6 +39,7 @@ SETUVAR fish_pager_color_description:yellow\x1e\x2di
 SETUVAR fish_pager_color_prefix:normal\x1e\x2d\x2dbold\x1e\x2d\x2dunderline
 SETUVAR fish_pager_color_progress:brwhite\x1e\x2d\x2dbackground\x3dcyan
 SETUVAR fish_pager_color_selected_background:\x2dr
+SETUVAR fish_user_paths:/Users/surajpulami/\x2epub\x2dcache/bin\x1e/Library/Java/JavaVirtualMachines/zulu\x2d17\x2ejdk/Contents/Home/bin\x1e/Users/surajpulami/Developer/DevelopmentKits/Flutter/flutter/bin\x1e/Users/surajpulami/Developer/DevelopmentKits/Android/cmdline\x2dtools/latest/bin\x1e/Users/surajpulami/Developer/DevelopmentKits/Android/platform\x2dtools\x1e/Users/surajpulami/Developer/DevelopmentKits/Android/emulator\x1e/Users/surajpulami/Library/TinyTeX/bin/universal\x2ddarwin
 SETUVAR pure_begin_prompt_with_current_directory:true
 SETUVAR pure_check_for_new_release:false
 SETUVAR pure_color_at_sign:pure_color_mute
