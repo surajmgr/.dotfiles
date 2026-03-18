@@ -135,6 +135,9 @@
 !.config/zed/settings.json
 !.config/zed/keymap.json
 
+# Starship
+!.config/starship.toml
+
 # Override unnecessary files; These forces git to ignore following files even if a previous rule would include them
 .env
 .DS_Store

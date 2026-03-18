@@ -104,16 +104,12 @@
           "background": "#58a6ff",
         },
       ],
-
       "panel.focused_border": "#58a6ff",
       "editor.active_line.background": "#161b22",
-
       "status_bar.background": "#161b22",
-
       "scrollbar.thumb.background": "#30363d",
       "scrollbar.thumb.hover_background": "#484f58",
       "scrollbar.track.background": "#0d1117",
-
       "drop_target.background": "#1f242c",
     },
   },
@@ -149,11 +145,13 @@
     "starts_open": false,
     "git_status": true,
     "sticky_scroll": false,
+    "entry_spacing": "comfortable",
+    "button": true,
     "scrollbar": {
       "show": "never",
     },
     "indent_guides": {
-      "show": "never",
+      "show": "always",
     },
   },
   "outline_panel": {
@@ -174,7 +172,7 @@
     "runnables": false,
   },
   "indent_guides": {
-    "enabled": false,
+    "enabled": true,
   },
   "ui_font_family": "Hack Nerd Font Mono",
   "ui_font_size": 16,
@@ -210,20 +208,38 @@
   "when_closing_with_no_tabs": "keep_window_open",
   "close_on_file_delete": true,
   "restore_on_file_reopen": false,
-  // "restore_on_startup": "empty_tab",
+  "restore_on_startup": "last_workspace",
   "auto_install_extensions": {},
   "session": {
-    "restore_unsaved_buffers": false,
+    "restore_unsaved_buffers": true,
   },
   "centered_layout": {
     "right_padding": 0.15,
     "left_padding": 0.15,
   },
   "terminal": {
-    // "shell": {
-    //   "with_arguments": []
-    // },
+    "option_as_meta": false,
+    "dock": "bottom",
+    "scrollbar": {
+      "show": "never",
+    },
+    "toolbar": {
+      "breadcrumbs": false,
+    },
+    "default_height": 320,
+    "keep_selection_on_copy": false,
+    "font_weight": 300,
     "working_directory": "current_project_directory",
+    "shell": {
+      "with_arguments": {
+        "program": "/opt/homebrew/bin/fish",
+        "args": [],
+      },
+    },
+    "button": true,
+    "blinking": "terminal_controlled",
+    "cursor_shape": "underline",
+    "font_size": 14,
   },
   "search": {
     "case_sensitive": false,

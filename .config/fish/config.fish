@@ -30,3 +30,4 @@ source ~/.orbstack/shell/init2.fish 2>/dev/null || :
 test -e {$HOME}/.iterm2_shell_integration.fish ; and source {$HOME}/.iterm2_shell_integration.fish
 
 zoxide init fish --cmd cd | source
+starship init fish | source

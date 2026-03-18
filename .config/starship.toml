@@ -1,0 +1,66 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+add_newline = false
+palette = "dracula"
+
+format = "$directory $character "
+right_format = "$git_branch$git_status"
+
+[palettes.dracula]
+pink   = "#ff79c6"
+purple = "#bd93f9"
+yellow = "#f1fa8c"
+red    = "#ff5555"
+muted  = "#6272a4"
+fg     = "#f8f8f2"
+
+[directory]
+format = "[$path](fg)"
+home_symbol = "surajpulami"
+truncation_length = 2
+truncation_symbol = ""
+read_only = " ◈"
+read_only_style = "red"
+
+[character]
+format = "$symbol"
+success_symbol = "[❯](bold pink)"
+error_symbol   = "[❯](bold red)"
+vimcmd_symbol  = "[❮](bold muted)"
+
+[git_branch]
+symbol = " "
+format = "[ $branch ](bold purple)"
+truncation_length = 24
+truncation_symbol = "…"
+only_attached = true
+
+[git_status]
+disabled = false
+format = "[$all_status](bold yellow)"
+staged = "+"
+modified = "!"
+untracked = "?"
+ahead = "⇡"
+behind = "⇣"
+conflicted = "!"
+renamed = "➜"
+deleted = "✘"
+
+# Everything else off
+[cmd_duration]
+disabled = true
+[jobs]
+disabled = true
+[battery]
+disabled = true
+[memory_usage]
+disabled = true
+[package]
+disabled = true
+[time]
+disabled = true
+[username]
+disabled = true
+[hostname]
+disabled = true
