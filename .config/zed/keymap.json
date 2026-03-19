@@ -1,8 +1,106 @@
 [
   {
-    "context": "(VimControl && !menu)",
+    // Global Panels
+    "context": "Workspace",
     "bindings": {
-      "g r d": "editor::GoToDefinition"
-    }
-  }
+      "ctrl-/": "workspace::ToggleBottomDock",
+    },
+  },
+
+  {
+    "context": "ProjectPanel && not_editing",
+    "bindings": {
+      "a": "project_panel::NewFile",
+      "\\": "project_panel::Toggle",
+    },
+  },
+
+  {
+    "context": "GitPanel",
+    "bindings": {
+      "\\": "git_panel::Toggle",
+      "g space": "git_panel::Toggle",
+      "P": "git::Push",
+      "p": "git::Pull",
+      "g p r": "git::CreatePullRequest",
+      "g b": "git::Branch",
+      "g c enter": "git::Commit",
+      "g c a": "git::Amend",
+      "g c g": "git::GenerateCommitMessage",
+      "g c u": "git::Uncommit",
+      "g f P": "git::ForcePush",
+      "g s a": "git::StageAll",
+    },
+  },
+
+  {
+    // --- Non Editing ---
+    "context": "(Editor && (vim_mode == normal || vim_mode == visual)) || (ProjectPanel && not_editing)",
+    "bindings": {
+      // --- FILES ---
+      "space f f": "file_finder::Toggle",
+      "space f s": "file_finder::Toggle",
+      "space f g": [
+        "action::Sequence",
+        ["pane::DeploySearch", "workspace::ZoomIn"],
+      ],
+      "space f r": "tab_switcher::Toggle",
+      "space f p": "projects::OpenRecent",
+
+      // --- BUFFERS ---
+      "space ,": "tab_switcher::Toggle",
+      "space b d": "pane::CloseActiveItem",
+
+      // --- ZEN / LAYOUT ---
+      "space z": "workspace::ToggleZoom",
+      "space w e": "workspace::ToggleLeftDock",
+      "space w b": "workspace::ToggleBottomDock",
+
+      // --- GIT ---
+      "space g space": [
+        "action::Sequence",
+        [
+          [
+            "task::Spawn",
+            { "task_name": "LazyGit", "reveal_target": "center" },
+          ],
+          "workspace::ZoomIn",
+        ],
+      ],
+      "space g g": "git_panel::Toggle",
+      "space g s": "git::Blame",
+
+      // --- LSP ---
+      "g r d": "editor::GoToDefinition",
+      "g r r": "editor::FindAllReferences",
+      "g r i": "editor::GoToImplementation",
+      "g r t": "editor::GoToTypeDefinition",
+      "g r N": "editor::Rename",
+      "space s s": "outline::Toggle",
+
+      // --- COMMANDS ---
+      "space p": "command_palette::Toggle",
+      "space t": "workspace::NewCenterTerminal",
+      "space n": "editor::ToggleInlayHints",
+
+      "\\": "project_panel::Toggle",
+      "space e": "project_panel::Toggle",
+      "space g r": "workspace::ToggleRightDock",
+    },
+  },
+
+  {
+    "context": "Editor",
+    "bindings": {
+      "alt-j": "editor::MoveLineDown",
+      "alt-k": "editor::MoveLineUp",
+    },
+  },
+
+  {
+    "context": "Terminal",
+    "bindings": {
+      "ctrl-/": "workspace::ToggleBottomDock",
+    },
+  },
 ]

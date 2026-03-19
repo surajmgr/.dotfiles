@@ -29,10 +29,24 @@
         },
       },
     },
+    "TypeScript": {
+      "formatter": {
+        "language_server": {
+          "name": "biome",
+        },
+      },
+    },
+    "TSX": {
+      "formatter": {
+        "language_server": {
+          "name": "biome",
+        },
+      },
+    },
   },
   "git_panel": {
     "sort_by_path": true,
-    "tree_view": true,
+    "tree_view": false,
   },
   "collaboration_panel": {
     "dock": "right",
@@ -168,14 +182,14 @@
   },
   "gutter": {
     "min_line_number_digits": 0,
-    "folds": false,
+    "folds": true,
     "runnables": false,
   },
   "indent_guides": {
     "enabled": true,
   },
   "ui_font_family": "Hack Nerd Font Mono",
-  "ui_font_size": 16,
+  "ui_font_size": 14,
   "buffer_font_family": "Hack Nerd Font Mono",
   "buffer_font_size": 12,
   "buffer_line_height": {
@@ -195,8 +209,8 @@
   "tab_size": 2,
   "auto_indent": false,
   "auto_indent_on_paste": false,
-  "show_completions_on_input": false,
-  "show_completion_documentation": false,
+  "show_completions_on_input": true,
+  "show_completion_documentation": true,
   "inline_code_actions": false,
   "lsp_document_colors": "none",
   "hover_popover_enabled": true,
@@ -206,7 +220,7 @@
   "horizontal_scroll_margin": 1,
   "vertical_scroll_margin": 1,
   "when_closing_with_no_tabs": "keep_window_open",
-  "close_on_file_delete": true,
+  "close_on_file_delete": false,
   "restore_on_file_reopen": false,
   "restore_on_startup": "last_workspace",
   "auto_install_extensions": {},

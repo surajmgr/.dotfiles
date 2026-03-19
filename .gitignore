@@ -134,6 +134,9 @@
 !.config/zed/
 !.config/zed/settings.json
 !.config/zed/keymap.json
+!.config/zed/tasks.json
+!.config/zed/*
+!.config/zed/snippets/*
 
 # Starship
 !.config/starship.toml
