@@ -74,13 +74,6 @@
       },
     },
     "TypeScript": {
-      // "language_servers": [
-      //   "tsgo",
-      //   "!vtsls",
-      //   "!typescript-language-server",
-      //   "...",
-      // ],
-      "prettier": { "allowed": false },
       "formatter": {
         "language_server": {
           "name": "biome",
@@ -88,13 +81,6 @@
       },
     },
     "TSX": {
-      // "language_servers": [
-      //   "tsgo",
-      //   "!vtsls",
-      //   "!typescript-language-server",
-      //   "...",
-      // ],
-      "prettier": { "allowed": false },
       "formatter": {
         "language_server": {
           "name": "biome",
@@ -318,7 +304,7 @@
   "current_line_highlight": "none",
   "show_whitespaces": "none",
   "tab_size": 2,
-  "auto_indent": "none",
+  "auto_indent": false,
   "auto_indent_on_paste": false,
   "show_completions_on_input": true,
   "show_completion_documentation": true,

@@ -31,3 +31,9 @@ test -e {$HOME}/.iterm2_shell_integration.fish ; and source {$HOME}/.iterm2_shel
 
 zoxide init fish --cmd cd | source
 starship init fish | source
+direnv hook fish | source
+
+# Added by LM Studio CLI (lms)
+set -gx PATH $PATH /Users/surajpulami/.lmstudio/bin
+# End of LM Studio CLI section
+
